@@ -1,0 +1,25 @@
+FROM library/alpine:latest
+
+RUN apk add --no-cache --virtual .build-deps python3 py3-numpy py3-pillow libwebp py3-yaml py3-requests python3-dev \
+    libffi-dev musl-dev openssl-dev gcc ffmpeg libmagic \
+    && set -ex \
+    && pip3 install --upgrade pip \
+    && pip3 install --no-cache-dir ehforwarderbot \
+    && pip3 install --no-cache-dir efb-telegram-master \
+    && pip3 install --no-cache-dir efb-wechat-slave \
+    && mkdir -p /root/.ehforwarderbot/profiles/default/ \
+    && mkdir -p /root/.ehforwarderbot/profiles/default/blueset.telegram \ 
+    && mkdir -p /root/.ehforwarderbot/profiles/default/blueset.wechat \
+
+#make clean
+    && apk del .build-deps \
+    && rm -rf /tmp/* /var/cache/apk/* /root/.cache/*
+
+COPY blueset.telegram-config.yaml /root/.ehforwarderbot/profiles/default/blueset.telegram/config.yaml
+COPY default-config.yaml /root/.ehforwarderbot/profiles/default/config.yaml
+
+#EFB
+ENV TOKEN=88888888:00000000000000000
+ENV ADM=999999999
+
+ENTRYPOINT [ "bash", "/usr/local/bin/entrypoint.sh" ]

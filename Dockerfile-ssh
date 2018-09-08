@@ -1,4 +1,4 @@
-FROM library/alpine
+FROM library/alpine:3.6
 
 ENV ROOT_PASSWORD root
 

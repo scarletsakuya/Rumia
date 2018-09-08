@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM library/alpine
 
 ENV ROOT_PASSWORD root
 

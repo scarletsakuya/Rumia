@@ -12,7 +12,6 @@ RUN set -ex \
     && unzip /tmp/v2ray/v2ray.zip -d /tmp/v2ray/ \
     && mv /tmp/v2ray/v2ray-${V2RAY_VERSION}-linux-64/v2ray /usr/bin \
     && chmod +x /usr/bin/v2ray \
-    && apk del .build-deps \
     && rm -rf /tmp/* /var/cache/apk/* /root/.cache/*
     
 #copy config file

@@ -13,7 +13,7 @@ RUN apk --no-cache upgrade \
     && sed -ri s/#PermitRootLogin.*/PermitRootLogin\ yes/ /etc/ssh/sshd_config \
     && sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config \
     && rm -rf /var/cache/apk/* /tmp/* /root/.cache/* \
-    && chmod +x /usr/local/bin/ssh.sh
+    && chmod +x /usr/local/bin/ssh.sh \
     && ssh-keygen -A 
 
 EXPOSE 22/tcp

@@ -6,5 +6,4 @@ fi
 
 echo "Start Success !"
 
-# do not detach (-D), log to stderr (-e), passthrough other arguments
 exec /usr/sbin/sshd -D

@@ -17,4 +17,4 @@ COPY ssh.sh /usr/local/bin/ssh.sh
 
 EXPOSE 22/tcp
 
-ENTRYPOINT ["/usr/local/bin/ssh.sh"]
+ENTRYPOINT ["bash","/usr/local/bin/ssh.sh"]

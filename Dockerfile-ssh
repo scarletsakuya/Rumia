@@ -1,7 +1,5 @@
 FROM alpine:latest
 
-LABEL maintainer="https://github.com/hermsi1337"
-
 ENV ROOT_PASSWORD root
 
 RUN set -ex \
@@ -13,7 +11,6 @@ RUN set -ex \
     && sed -ri s/#PermitRootLogin.*/PermitRootLogin\ yes/ /etc/ssh/sshd_config \
     && sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config \
     && ssh-keygen -A \
-    && echo "root:${ROOT_PASSWORD}" | chpasswd \
     && apk del .build-deps \
     && rm -rf /var/cache/apk/* /tmp/* /root/.cache/*
     

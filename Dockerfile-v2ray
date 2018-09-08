@@ -16,7 +16,7 @@ RUN set -ex \
     
 #copy config file
 COPY v2rayconfig.json /etc/v2ray/config.json
-COPY entrypoint.sh /usr/local/bin/v2ray.sh
+COPY v2ray.sh /usr/local/bin/v2ray.sh
 
 #ss
 ENV SS_PORT=1343

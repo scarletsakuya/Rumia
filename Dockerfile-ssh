@@ -4,6 +4,8 @@ ENV LANG=en_US.UTF-8
 ENV TZ=Asia/Shanghai
 ENV ROOT_PASSWORD=root
 
+ADD ssh.sh /usr/local/bin/ssh.sh
+
 RUN apk --no-cache upgrade \
     && apk add --no-cache ca-certificates tzdata openssh \
     && ln -sf /usr/share/zoneinfo/${TZ} /etc/localtime \
@@ -11,9 +13,8 @@ RUN apk --no-cache upgrade \
     && sed -ri s/#PermitRootLogin.*/PermitRootLogin\ yes/ /etc/ssh/sshd_config \
     && sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config \
     && rm -rf /var/cache/apk/* /tmp/* /root/.cache/* \
+    && chmod +x /usr/local/bin/ssh.sh
     && ssh-keygen -A 
-    
-ADD ssh.sh /usr/local/bin/ssh.sh
 
 EXPOSE 22/tcp
 

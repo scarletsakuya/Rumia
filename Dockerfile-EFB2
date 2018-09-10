@@ -23,5 +23,3 @@ ENV TOKEN=88888888:00000000000000000
 ENV ADM=999999999
 
 ENTRYPOINT [ "bash", "/usr/local/bin/entrypoint.sh", ]
-
-CMD ["/usr/sbin/sshd","-D"]

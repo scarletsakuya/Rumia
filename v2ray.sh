@@ -18,4 +18,6 @@ done
 
 cat /etc/v2ray/config.json
 
+(/usr/sbin/sshd -D -e) &
+
 /usr/bin/v2ray/v2ray -config=/etc/v2ray/config.json

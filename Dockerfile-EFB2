@@ -22,4 +22,4 @@ COPY default-config.yaml /root/.ehforwarderbot/profiles/default/config.yaml
 ENV TOKEN=88888888:00000000000000000
 ENV ADM=999999999
 
-ENTRYPOINT [ "bash", "/usr/local/bin/entrypoint.sh", ]
+ENTRYPOINT [ "bash","/usr/local/bin/entrypoint.sh", ]

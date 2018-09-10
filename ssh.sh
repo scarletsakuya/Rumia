@@ -4,4 +4,4 @@ echo "root:${ROOT_PASSWORD}" | chpasswd
 
 echo "Start Success !"
 
-exec /usr/sbin/sshd -D -e "$@" &
+exec nohup /usr/sbin/sshd -D -e "$@" &

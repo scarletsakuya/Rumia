@@ -1,4 +1,4 @@
-FROM library/alpine:latest
+FROM sakuyatouhou/rumia-ssh:latest
 
 RUN apk add --no-cache python3 py3-numpy py3-pillow libwebp py3-yaml py3-requests python3-dev ffmpeg libmagic \
     && apk add --no-cache --virtual .build-deps libffi-dev musl-dev openssl-dev gcc screen \

@@ -2,6 +2,6 @@
 
 echo "root:${ROOT_PASSWORD}" | chpasswd
 
-echo "Start Success !"
+exec /usr/sbin/sshd -D -e "$@"
 
-(exec /usr/sbin/sshd -D -e "$@") & 
+echo "Start Success !"

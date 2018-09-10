@@ -1,9 +1,9 @@
 FROM library/alpine:latest
 
-RUN apk add --no-cache --virtual .build-deps python3 py3-numpy py3-pillow libwebp py3-yaml py3-requests python3-dev \
-    libffi-dev musl-dev openssl-dev gcc ffmpeg libmagic \
-    && set -ex \
+RUN apk add --no-cache python3 py3-numpy py3-pillow libwebp py3-yaml py3-requests python3-dev ffmpeg libmagic \
+    && apk add --no-cache --virtual .build-deps libffi-dev musl-dev openssl-dev gcc \
     && pip3 install --upgrade pip \
+    && pip3 install --upgrade setuptools \
     && pip3 install --no-cache-dir ehforwarderbot \
     && pip3 install --no-cache-dir efb-telegram-master \
     && pip3 install --no-cache-dir efb-wechat-slave \

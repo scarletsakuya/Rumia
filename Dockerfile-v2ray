@@ -1,4 +1,4 @@
-FROM sakuyatouhou/rumia-ssh
+FROM sakuyatouhou/rumia-ssh as builder
 
 #install v2ray
 ENV V2RAY_VERSION=v3.39

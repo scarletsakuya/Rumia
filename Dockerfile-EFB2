@@ -17,9 +17,10 @@ RUN apk add --no-cache python3 py3-numpy py3-pillow libwebp py3-yaml py3-request
 
 COPY blueset.telegram-config.yaml /root/.ehforwarderbot/profiles/default/blueset.telegram/config.yaml
 COPY default-config.yaml /root/.ehforwarderbot/profiles/default/config.yaml
+COPY efb.sh /usr/local/bin/efb.sh
 
 #EFB
 ENV TOKEN=88888888:00000000000000000
 ENV ADM=999999999
 
-ENTRYPOINT [ "bash","/usr/local/bin/entrypoint.sh", ]
+ENTRYPOINT [ "bash","/usr/local/bin/efb.sh", ]

@@ -1,9 +1,7 @@
 #!/bin/sh
 
-if [ ! -z "${ROOT_PASSWORD}" ] && [ "${ROOT_PASSWORD}" != "root" ]; then
-    echo "root:${ROOT_PASSWORD}" | chpasswd
-fi
+echo "root:${ROOT_PASSWORD}" | chpasswd
 
 echo "Start Success !"
 
-exec /usr/sbin/sshd -D
+exec /usr/sbin/sshd -D -e "$@"

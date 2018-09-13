@@ -18,13 +18,11 @@ RUN set -ex \
     && sed -ri 's/^PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config \
     && sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config \
     # set password for ssh and nghttp
-    && echo root:${ROOT_PASSWORD}|chpasswd \
     && htpasswd -b -c /etc/squid/password ${HTTP_USER} ${ROOT_PASSWORD} \
     # set v2ray
     && curl -L -o /tmp/go.sh https://install.direct/go.sh \
     && chmod +x /tmp/go.sh \
     && /tmp/go.sh \
-    
     # make clean
     && apt-get clean \
     && apt-get autoclean \
@@ -52,7 +50,6 @@ ENV KCP_UPLINK=5
 ENV KCP_DOWNLINK=20
 ENV KCP_READBUFF=2
 ENV KCP_WRITEBUFF=2
-
 
 EXPOSE ${SS_PORT}/tcp
 EXPOSE ${SS_PORT}/udp

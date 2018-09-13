@@ -5,6 +5,8 @@ ENV HTTP_USER=sakuya
 ENV LANG=en_US.UTF-8 LANGUAGE=en_US:en LC_ALL=en_US.UTF-8
 ENV TZ=Asia/Shanghai
 
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+
 RUN set -ex \
     && apt-get update \
     && apt-get install -yqq openssh-server locales tzdata curl \
@@ -24,6 +26,7 @@ RUN set -ex \
     && curl -L -o /tmp/go.sh https://install.direct/go.sh \
     && chmod +x /tmp/go.sh \
     && /tmp/go.sh \
+    && chmod +x /usr/local/bin/entrypoint.sh
     
     # make clean
     && apt-get clean \
@@ -36,8 +39,6 @@ RUN set -ex \
 COPY nghttpx.conf /etc/nghttpx/nghttpx.conf
 COPY squid.conf /etc/squid/squid.conf
 COPY v2rayconfig.json /etc/v2ray/config.json
-COPY entrypoint.sh /usr/local/bin/
-
 
 #vmess
 ENV VMESS_PORT=9999

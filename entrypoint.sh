@@ -1,5 +1,10 @@
 #!/bin/bash
 
+echo ${ROOT_PASSWORD}
+echo `root:${ROOT_PASSWORD}` | chpasswd
+
+echo "Start Success !"
+
 sed -i "s/\[VMESS_PORT\]/${VMESS_PORT}/g" /etc/v2ray/config.json
 sed -i "s/\[VMESS_ID\]/${VMESS_ID}/g" /etc/v2ray/config.json
 sed -i "s/\[VMESS_LEVEL\]/${VMESS_LEVEL}/g" /etc/v2ray/config.json
@@ -17,10 +22,6 @@ for i in "$@"; do
 done
 
 cat /etc/v2ray/config.json
-
-echo "root:${ROOT_PASSWORD}" | chpasswd
-
-echo "Start Success !"
 
 (/usr/sbin/sshd -D -e "$@") &
 

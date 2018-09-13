@@ -1,0 +1,92 @@
+FROM library/debian:latest
+
+ENV ROOT_PASS=root
+ENV HTTP_USER=sakuya
+ENV LANG=en_US.UTF-8 LANGUAGE=en_US:en LC_ALL=en_US.UTF-8
+ENV TZ=Asia/Shanghai
+ENV TOKEN=88888888:00000000000000000
+ENV USER=999999999
+
+#COPY autostart.sh /etc/init.d/autostart.sh
+
+RUN set -ex \
+    && echo "deb http://ftp.de.debian.org/debian testing main" | tee -a /etc/apt/sources.list \
+    && apt-get update \
+    && apt-get -t testing install python3.6 python3-distutils -y \
+    && apt-get install -yqq vim openssh-server wget locales tzdata lrzsz curl squid3 nghttp2 \
+    ffmpeg libmagic-dev libwebp-dev python3-pip apache2-utils screen \
+    # set time etc
+    && locale-gen en_US.UTF-8 \
+    && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
+    && echo "Asia/Shanghai" > /etc/timezone \
+    && dpkg-reconfigure -f noninteractive tzdata \
+    # ssh set 
+    && sed -ri 's/^PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config \
+    && sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config \
+    # set password for ssh and nghttp
+    && echo root:${ROOT_PASS}|chpasswd \
+    && htpasswd -b -c /etc/squid/password ${HTTP_USER} ${ROOT_PASS} \
+    # set v2ray
+    && curl -L -o /tmp/go.sh https://install.direct/go.sh \
+    && chmod +x /tmp/go.sh \
+    && /tmp/go.sh \
+    # install ehforwarderbot
+    && python3.6 -m pip install --upgrade pip \
+    && python3.6 -m pip install ehforwarderbot \
+    && python3.6 -m pip install efb-telegram-master \
+    && python3.6 -m pip install efb-wechat-slave \
+    # create dir and files
+    && mkdir -p /var/run/sshd \
+    && mkdir -p /root/.ehforwarderbot/profiles/default/ \
+    && mkdir -p /root/.ehforwarderbot/profiles/default/blueset.telegram \
+    && touch /root/.ehforwarderbot/profiles/default/config.yaml \
+    && touch /root/.ehforwarderbot/profiles/default/bluestet.telegram\config.yaml \
+    #&& echo "master_channel: blueset.telegram \	slave_channels: \- blueset.wechat" | tee /root/.ehforwarderbot/profiles/default/config.yaml \
+    #&& echo "taken:\"${TOKEN}\" \admins: \- ${USER} " | tee /root/.ehforwarderbot/profiles/default/bluestet.telegram\config.yaml \
+    # add auto-start services
+    #&& chmod +x /etc/init.d/autostart.sh \
+    # make clean
+    && apt-get clean \
+    && apt-get autoclean \
+    && apt-get autoremove \
+    #&& dpkg --list | grep "^rc" | cut -d " " -f 3 | xargs dpkg --purge \
+    && rm -rf /tmp/* /root/.cache /var/lib/apt/lists/*
+
+#COPY config file
+COPY nghttpx.conf /etc/nghttpx/nghttpx.conf
+COPY squid.conf /etc/squid/squid.conf
+COPY blueset.telegram-config.yaml /root/.ehforwarderbot/profiles/default/bluestet.telegram\config.yaml
+COPY default-config.yaml /root/.ehforwarderbot/profiles/default/config.yaml
+COPY v2rayconfig.json /etc/v2ray/config.json
+COPY entrypoint.sh /usr/local/bin/
+
+#ss
+ENV SS_PORT=8888
+ENV SS_PASSWORD=wnxd
+ENV SS_METHOD=aes-256-gcm
+
+#vmess
+ENV VMESS_PORT=9999
+ENV VMESS_ID=00000000-0000-0000-0000-000000000000
+ENV VMESS_LEVEL=1
+ENV VMESS_ALTERID=64
+
+#kcp
+ENV KCP_PORT_VMESS=9999
+ENV KCP_MUT=1350
+ENV KCP_TTI=50
+ENV KCP_UPLINK=5
+ENV KCP_DOWNLINK=20
+ENV KCP_READBUFF=2
+ENV KCP_WRITEBUFF=2
+
+#EFB
+ENV TOKEN=88888888:00000000000000000
+ENV ADM=999999999
+
+EXPOSE ${SS_PORT}/tcp
+EXPOSE ${SS_PORT}/udp
+EXPOSE ${VMESS_PORT}/tcp
+EXPOSE ${KCP_PORT_VMESS}/udp
+
+ENTRYPOINT [ "bash", "/usr/bin/entrypoint.sh" ]

@@ -13,12 +13,12 @@ RUN set -ex \
     && locale-gen en_US.UTF-8 \
     && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
     && echo "Asia/Shanghai" > /etc/timezone \
-    && dpkg-reconfigure -f noninteractive tzdata \
+    #&& dpkg-reconfigure -f noninteractive tzdata \
     # ssh set 
     && sed -ri 's/^PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config \
     && sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config \
     # set password for ssh and nghttp
-    && htpasswd -b -c /etc/squid/password ${HTTP_USER} ${ROOT_PASSWORD} \
+    #&& htpasswd -b -c /etc/squid/password ${HTTP_USER} ${ROOT_PASSWORD} \
     # set v2ray
     && curl -L -o /tmp/go.sh https://install.direct/go.sh \
     && chmod +x /tmp/go.sh \

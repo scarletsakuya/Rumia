@@ -21,7 +21,7 @@ RUN set -ex \
     && rm -rf /tmp/* /root/.cache /var/lib/apt/lists/*
 
 #COPY config file
-COPY ssh.sh /usr/local/bin/ssh.sh
+COPY ssh.sh /usr/bin/ssh.sh
 
 #vmess
 ENV VMESS_PORT=5061

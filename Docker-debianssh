@@ -1,0 +1,43 @@
+FROM library/debian:latest
+
+ENV ROOT_PASSWORD=root
+ENV HTTP_USER=sakuya
+ENV LANG=en_US.UTF-8 LANGUAGE=en_US:en LC_ALL=en_US.UTF-8
+ENV TZ=Asia/Shanghai
+
+RUN set -ex \
+    && apt-get update \
+    && apt-get install -y openssh-server locales-all tzdata curl bash \
+    && locale-gen en_US.UTF-8 \
+    && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
+    && echo "Asia/Shanghai" > /etc/timezone \
+    && dpkg-reconfigure -f noninteractive tzdata \
+    # ssh set 
+    && sed -ri 's/^PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config \
+    && sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config \
+    && apt-get clean \
+    && apt-get autoclean \
+    && apt-get autoremove \
+    && rm -rf /tmp/* /root/.cache /var/lib/apt/lists/*
+
+#COPY config file
+COPY ssh.sh /usr/local/bin/ssh.sh
+
+#vmess
+ENV VMESS_PORT=5061
+ENV VMESS_ID=00000000-0000-0000-0000-000000000000
+ENV VMESS_LEVEL=1
+ENV VMESS_ALTERID=64
+
+#kcp
+ENV KCP_PORT_VMESS=5061
+ENV KCP_MUT=1350
+ENV KCP_TTI=50
+ENV KCP_UPLINK=5
+ENV KCP_DOWNLINK=20
+ENV KCP_READBUFF=2
+ENV KCP_WRITEBUFF=2
+
+EXPOSE 20443/tcp 20443/udp 22/tcp ${VMESS_PORT}/tcp ${KCP_PORT_VMESS}/udp
+
+ENTRYPOINT [ "bash", "/usr/bin/ssh.sh" ]

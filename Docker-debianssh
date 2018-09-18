@@ -8,7 +8,9 @@ ENV ROOT_PASSWORD=root \
     TZ=Asia/Shanghai
 
 RUN set -ex \
+    echo "deb http://ftp.de.debian.org/debian testing main" | tee -a /etc/apt/sources.list \
     && apt-get update \
+    && apt-get -t testing install python3.6 python3-distutils -y \
     && apt-get install -y openssh-server locales tzdata curl bash \
     squid3 nghttp2 apache2-utils \
     && locale-gen ${LC_ALL} \
@@ -19,12 +21,15 @@ RUN set -ex \
     # ssh set 
     && sed -ri "s/UsePrivilegeSeparation.*/UsePrivilegeSeparation no/g" /etc/ssh/sshd_config \
     && sed -ri 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config \
-    && sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
+    && sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd \
+    # set password for ssh and nghttp
     && echo root:${ROOT_PASSWORD}|chpasswd \
     && htpasswd -b -c /etc/squid/password ${HTTP_USER} ${ROOT_PASSWORD} \
+    # set v2ray
     && curl -L -o /tmp/go.sh https://install.direct/go.sh \
     && chmod +x /tmp/go.sh \
     && /tmp/go.sh \
+    # make clean
     && apt-get clean \
     && apt-get autoclean \
     && apt-get autoremove \
@@ -38,14 +43,16 @@ COPY default-config.yaml /root/.ehforwarderbot/profiles/default/config.yaml
 COPY v2rayconfig.json /etc/v2ray/config.json
 COPY entrypoint.sh /usr/local/bin/
 
+#EFB
+ENV TOKEN=88888888:00000000000000000 \
+    ADM=999999999 \
 #vmess
-ENV VMESS_PORT=5061 \
+    VMESS_PORT=5061 \
     VMESS_ID=00000000-0000-0000-0000-000000000000 \
     VMESS_LEVEL=1 \
-    VMESS_ALTERID=64
-
+    VMESS_ALTERID=64 \
 #kcp
-ENV KCP_PORT_VMESS=5061 \
+    KCP_PORT_VMESS=5061 \
     KCP_MUT=1350 \
     KCP_TTI=50 \
     KCP_UPLINK=5 \

@@ -52,4 +52,4 @@ ENV KCP_PORT_VMESS=5061 \
 
 EXPOSE 20443/tcp 20443/udp 22/tcp ${VMESS_PORT}/tcp ${KCP_PORT_VMESS}/udp
 
-ENTRYPOINT [ "bash", "/usr/local/bin/v2ray.sh" ]
+ENTRYPOINT [ "bash", "/usr/local/bin/entrypoint.sh" ]

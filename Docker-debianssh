@@ -9,8 +9,8 @@ ENV ROOT_PASSWORD=root \
 
 RUN set -ex \
     echo "deb http://ftp.de.debian.org/debian testing main" | tee -a /etc/apt/sources.list \
-    && echo 'APT::Default-Release "stable";' | tee -a /etc/apt/apt.conf.d/00local \
-    && apt-get update \
+    && echo 'APT::Default-Release "stable";' | tee -a /etc/apt/apt.conf.d/00local
+RUN apt-get update \
     && apt-get -t testing install python3.6 python3-distutils -y \
     && apt-get install -y openssh-server locales tzdata curl bash \
     squid3 nghttp2 apache2-utils \
@@ -36,14 +36,6 @@ RUN set -ex \
     && apt-get autoremove \
     && rm -rf /tmp/* /root/.cache /var/lib/apt/lists/*
 
-#COPY config file
-COPY nghttpx.conf /etc/nghttpx/nghttpx.conf
-COPY squid.conf /etc/squid/squid.conf
-COPY blueset.telegram-config.yaml /root/.ehforwarderbot/profiles/default/bluestet.telegram/config.yaml
-COPY default-config.yaml /root/.ehforwarderbot/profiles/default/config.yaml
-COPY v2rayconfig.json /etc/v2ray/config.json
-COPY entrypoint.sh /usr/local/bin/
-
 #EFB
 ENV TOKEN=88888888:00000000000000000 \
     ADM=999999999 \
@@ -60,6 +52,14 @@ ENV TOKEN=88888888:00000000000000000 \
     KCP_DOWNLINK=20 \
     KCP_READBUFF=2 \
     KCP_WRITEBUFF=2
+    
+#COPY config file
+COPY nghttpx.conf /etc/nghttpx/nghttpx.conf
+COPY squid.conf /etc/squid/squid.conf
+COPY blueset.telegram-config.yaml /root/.ehforwarderbot/profiles/default/bluestet.telegram/config.yaml
+COPY default-config.yaml /root/.ehforwarderbot/profiles/default/config.yaml
+COPY v2rayconfig.json /etc/v2ray/config.json
+COPY entrypoint.sh /usr/local/bin/
 
 EXPOSE 20443/tcp 20443/udp 22/tcp ${VMESS_PORT}/tcp ${KCP_PORT_VMESS}/udp
 

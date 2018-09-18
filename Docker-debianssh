@@ -19,7 +19,7 @@ RUN set -ex \
     && sed -ri 's/^PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config \
     && sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config \
     && echo root:${ROOT_PASSWORD}|chpasswd \
-    && htpasswd -b -c /etc/squid/password ${HTTP_USER} ${ROOT_PASS} \
+    && htpasswd -b -c /etc/squid/password ${HTTP_USER} ${ROOT_PASSWORD} \
     && curl -L -o /tmp/go.sh https://install.direct/go.sh \
     && chmod +x /tmp/go.sh \
     && /tmp/go.sh \

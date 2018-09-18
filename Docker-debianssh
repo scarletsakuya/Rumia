@@ -9,7 +9,7 @@ ENV ROOT_PASSWORD=root \
 
 RUN set -ex \
     && apt-get update \
-    && apt-get install -y openssh-server locales-all tzdata curl bash \
+    && apt-get install -y openssh-server locales tzdata curl bash \
     && locale-gen ${LC_ALL} \
     && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
     && echo "${TZ}" > /etc/timezone \

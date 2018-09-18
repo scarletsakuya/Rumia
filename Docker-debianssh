@@ -17,7 +17,7 @@ RUN set -ex \
     # ssh set 
     && sed -ri 's/^PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config \
     && sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config \
-    && echo root:${ROOT_PASS}|chpasswd \
+    && echo root:${ROOT_PASSWORD}|chpasswd \
     && htpasswd -b -c /etc/squid/password ${HTTP_USER} ${ROOT_PASS} \
     && curl -L -o /tmp/go.sh https://install.direct/go.sh \
     && chmod +x /tmp/go.sh \
@@ -30,7 +30,7 @@ RUN set -ex \
 #COPY config file
 COPY nghttpx.conf /etc/nghttpx/nghttpx.conf
 COPY squid.conf /etc/squid/squid.conf
-COPY blueset.telegram-config.yaml /root/.ehforwarderbot/profiles/default/bluestet.telegram\config.yaml
+COPY blueset.telegram-config.yaml /root/.ehforwarderbot/profiles/default/bluestet.telegram/config.yaml
 COPY default-config.yaml /root/.ehforwarderbot/profiles/default/config.yaml
 COPY v2rayconfig.json /etc/v2ray/config.json
 COPY entrypoint.sh /usr/local/bin/

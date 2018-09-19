@@ -17,7 +17,7 @@ RUN set -ex \
     && dpkg-reconfigure -f noninteractive tzdata \
     # ssh set 
     && sed -i "s/^#UsePrivilegeSeparation.*$/UsePrivilegeSeparation no/g" /etc/ssh/sshd_config \
-    && sed -i 's/^#PermitRootLogin.*$/PermitRootLogin yes/' /etc/ssh/sshd_config
+    && sed -i 's/^#PermitRootLogin.*$/PermitRootLogin yes/' /etc/ssh/sshd_config \
     # set password for ssh and nghttp
     && echo root:${ROOT_PASSWORD}|chpasswd \
     && htpasswd -b -c /etc/squid/password ${HTTP_USER} ${ROOT_PASSWORD} \

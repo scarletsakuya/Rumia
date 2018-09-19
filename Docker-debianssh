@@ -12,14 +12,12 @@ RUN set -ex \
     && apt-get install -y openssh-server locales tzdata curl bash \
     squid3 nghttp2 apache2-utils \
     && locale-gen ${LC_ALL} \
-    && localedef -i en_US -f UTF-8 en_US.UTF-8 \
     && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
     && echo "${TZ}" > /etc/timezone \
     && dpkg-reconfigure -f noninteractive tzdata \
     # ssh set 
-    && sed -ri "s/UsePrivilegeSeparation.*/UsePrivilegeSeparation no/g" /etc/ssh/sshd_config \
-    && sed -ri 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config \
-    && sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd \
+    && sed -i "s/^#UsePrivilegeSeparation.*$/UsePrivilegeSeparation no/g" /etc/ssh/sshd_config \
+    && sed -i 's/^#PermitRootLogin.*$/PermitRootLogin yes/' /etc/ssh/sshd_config
     # set password for ssh and nghttp
     && echo root:${ROOT_PASSWORD}|chpasswd \
     && htpasswd -b -c /etc/squid/password ${HTTP_USER} ${ROOT_PASSWORD} \

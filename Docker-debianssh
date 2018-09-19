@@ -8,9 +8,9 @@ ENV ROOT_PASSWORD=root \
     TZ=Asia/Shanghai
 
 RUN set -ex \
-    echo "deb http://ftp.de.debian.org/debian testing main" | tee -a /etc/apt/sources.list \
+    && echo "deb http://ftp.de.debian.org/debian testing main" | tee -a /etc/apt/sources.list \
     && echo 'APT::Default-Release "stable";' | tee -a /etc/apt/apt.conf.d/00local
-RUN apt-get update \
+    && apt-get update \
     && apt-get -t testing install python3.6 python3-distutils -y \
     && apt-get install -y openssh-server locales tzdata curl bash \
     squid3 nghttp2 apache2-utils \

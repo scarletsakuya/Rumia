@@ -1,6 +1,9 @@
 #!/bin/bash
 
-echo "root:${ROOT_PASSWORD}" | chpasswd
+echo ${ROOT_PASSWORD}
+date
+
+echo root:${ROOT_PASSWORD} | chpasswd
 mkdir -p -m 0755 /var/run/sshd
 
 echo "Start Success !"

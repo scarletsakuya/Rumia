@@ -9,7 +9,7 @@ ENV ROOT_PASSWORD=root \
 
 RUN set -ex \
     && apt-get update \
-    && apt-get install -y openssh-server locales tzdata curl bash \
+    && apt-get install -y openssh-server locales tzdata curl bash ffmpeg \
     squid3 nghttp2 apache2-utils \
     && locale-gen ${LC_ALL} \
     && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
@@ -33,6 +33,9 @@ RUN set -ex \
     && curl -L -o /tmp/get-pip.py https://bootstrap.pypa.io/get-pip.py \
     && python3.6 /tmp/get-pip.py \
     && python3.6 -m pip install --upgrade pip \
+    && python3.6 -m pip install ehforwarderbot \
+    && python3.6 -m pip install efb-telegram-master \
+    && python3.6 -m pip install efb-wechat-slave \
     # make clean
     && apt-get clean \
     && apt-get autoclean \

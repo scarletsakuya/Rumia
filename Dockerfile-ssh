@@ -9,7 +9,6 @@ RUN apk --no-cache upgrade \
     && ln -sf /usr/share/zoneinfo/$TZ /etc/localtime \
     && echo $TZ > /etc/timezone \
     && sed -ri s/#PermitRootLogin.*/PermitRootLogin\ yes/ /etc/ssh/sshd_config \
-    && sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config \
     && rm -rf /var/cache/apk/* /tmp/* /root/.cache/* \
     && ssh-keygen -A 
 

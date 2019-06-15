@@ -9,7 +9,7 @@ RUN set -ex \
     && mkdir -p /etc/v2ray \
     && mkdir -p /var/log/v2ray \
     && mkdir -p /usr/bin/v2ray \
-    && wget -O /v2ray/v2ray.zip ${V2RAY_DOWNLOAD_URL}
+    && wget -O /v2ray/v2ray.zip ${V2RAY_DOWNLOAD_URL} \
     && unzip /v2ray/v2ray.zip -d /v2ray/ \
     && mv /v2ray/v2ray-${V2RAY_VERSION}-linux-64/* /usr/bin/v2ray \
     && chmod +x /usr/bin/v2ray/v2ray \

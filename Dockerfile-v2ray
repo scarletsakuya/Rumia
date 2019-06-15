@@ -5,16 +5,16 @@ ENV V2RAY_VERSION=v4.19.1
 ENV V2RAY_DOWNLOAD_URL=https://github.com/v2ray/v2ray-core/releases/download/${V2RAY_VERSION}/v2ray-linux-64.zip
 
 RUN set -ex \
-    && mkdir -p /tmp/v2ray \
+    && mkdir -p /v2ray \
     && mkdir -p /etc/v2ray \
     && mkdir -p /var/log/v2ray \
     && mkdir -p /usr/bin/v2ray \
-RUN wget -O /tmp/v2ray/v2ray.zip ${V2RAY_DOWNLOAD_URL}
-RUN unzip /tmp/v2ray/v2ray.zip -d /tmp/v2ray/ \
-    && mv /tmp/v2ray/v2ray-${V2RAY_VERSION}-linux-64/* /usr/bin/v2ray \
+    && wget -O /v2ray/v2ray.zip ${V2RAY_DOWNLOAD_URL}
+    && unzip /v2ray/v2ray.zip -d /v2ray/ \
+    && mv /v2ray/v2ray-${V2RAY_VERSION}-linux-64/* /usr/bin/v2ray \
     && chmod +x /usr/bin/v2ray/v2ray \
     && chmod +x /usr/bin/v2ray/v2ctl \
-    && rm -rf /tmp/* /var/cache/apk/* /root/.cache/*
+    && rm -rf /v2ray /var/cache/apk/* /root/.cache/*
     
 #copy config file
 COPY v2rayconfig.json /etc/v2ray/config.json

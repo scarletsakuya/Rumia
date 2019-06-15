@@ -1,7 +1,7 @@
 FROM sakuyatouhou/rumia-ssh as builder
 
 #install v2ray
-ENV V2RAY_VERSION=v3.39
+ENV V2RAY_VERSION=v4.19.1
 ENV V2RAY_DOWNLOAD_URL=https://github.com/v2ray/v2ray-core/releases/download/${V2RAY_VERSION}/v2ray-linux-64.zip
 
 RUN set -ex \
